@@ -25,8 +25,6 @@ app.get('/categories', (req, res) => {
   const title = 'Service Categories';
   res.render('categories', { title });
 });
-
-
 app.get('/projects',  (req, res) => {
   const title = 'Service Projects';
   res.render('projects', { title });
