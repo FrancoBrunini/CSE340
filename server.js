@@ -8,19 +8,24 @@ const __dirname = path.dirname(__filename);
 const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', async (req, res) => {
+app.set('view engine', 'ejs');
+
+app.set('views', path.join(__dirname, 'src/views'));
+
+app.get('/', (req, res) => {
   const title = 'Home';
   res.render('home', { title });
 });
 
-app.get('/organizations', async (req, res) => {
+app.get('/organizations', (req, res) => {
   const title = 'Our Partner Organizations';
   res.render('organizations', { title });
 });
+app.get('/categories', (req, res) => {
+  const title = 'Service Categories';
+  res.render('categories', { title });
+});
 
-app.set('view engine', 'ejs');
-
-app.set('views', path.join(__dirname, 'src/views'));
 
 app.get('/projects', async (req, res) => {
   const title = 'Service Projects';
