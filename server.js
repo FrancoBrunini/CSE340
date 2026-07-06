@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/organizations', (req, res) => {
-  const title = 'Our Partner XD';
+  const title = 'Our Partner Organizations';
   res.render('organizations', { title });
 });
 app.get('/categories', (req, res) => {
