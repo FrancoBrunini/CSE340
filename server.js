@@ -27,7 +27,7 @@ app.get('/categories', (req, res) => {
 });
 app.get('/projects',  (req, res) => {
   const title = 'Service  Projects';
-  res.render('Ppojects', { title });
+  res.render('projects', { title });
 });
 app.listen(PORT, () => {
   console.log(`Server is running at http://127.0.0.1:${PORT}`);
