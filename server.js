@@ -3,6 +3,8 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/views/models/db.js';
 import { getAllOrganizations } from './src/views/models/organizations.js';
+import { getAllProjects } from './src/views/models/projects.js';
+import {getAllCategories} from './src/views/models/categories.js';
 
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
@@ -21,18 +23,25 @@ app.get('/', (req, res) => {
 });
 
 app.get('/organizations', async (req, res) => {
-  const title = 'Our Partner Organizations';
-  const organizations = await getAllOrganizations();
-  console.log(organizations);y
-  res.render('organizations', { title, organizations });
+    const organizations = await getAllOrganizations();
+      
+    const title = 'Our Partner Organizations';
+    console.log(organizations);
+    res.render('organizations', { title, organizations});
 });
-app.get('/categories', (req, res) => {
+app.get('/categories', async(req, res) => {
+  const categories = await getAllCategories();
   const title = 'Service Categories';
-  res.render('categories', { title });
+  res.render('categories', { title, categories});
 });
-app.get('/projects', (req, res) => {
-  const title = 'Service  Projects';
-  res.render('projects', { title });
+app.get('/projects', async (req, res) => {
+    const projects = await getAllProjects();
+
+    console.log(projects);
+
+    const title = 'Service Projects';
+
+    res.render('projects', { title, projects });
 });
 app.listen(PORT, async () => {
   try {
