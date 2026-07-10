@@ -2,7 +2,7 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/views/models/db.js';
-import { getAllOrganizations } from './src/models/organizations.js';
+import { getAllOrganizations } from './src/views/models/organizations.js';
 
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 app.get('/organizations', async (req, res) => {
   const title = 'Our Partner Organizations';
   const organizations = await getAllOrganizations();
+  console.log(organizations);y
   res.render('organizations', { title, organizations });
 });
 app.get('/categories', (req, res) => {
