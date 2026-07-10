@@ -1,7 +1,9 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { testConnection } from './src/views/models/db';
+import { testConnection } from './src/views/models/db.js';
+import { getAllOrganizations } from './src/models/organizations.js';
+
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
@@ -18,19 +20,20 @@ app.get('/', (req, res) => {
   res.render('home', { title });
 });
 
-app.get('/organizations', (req, res) => {
+app.get('/organizations', async (req, res) => {
   const title = 'Our Partner Organizations';
-  res.render('organizations', { title });
+  const organizations = await getAllOrganizations();
+  res.render('organizations', { title, organizations });
 });
 app.get('/categories', (req, res) => {
   const title = 'Service Categories';
   res.render('categories', { title });
 });
-app.get('/projects',  (req, res) => {
+app.get('/projects', (req, res) => {
   const title = 'Service  Projects';
   res.render('projects', { title });
 });
-app.listen(PORT, async() => {
+app.listen(PORT, async () => {
   try {
     await testConnection();
     console.log(`Server is running at http://127.0.0.1:${PORT}`);
