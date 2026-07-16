@@ -1,12 +1,20 @@
 <%- include('partials/header') %>
+
 <main>
-    <h1>Service Project Categories</h1>
+    <h1><%= title %></h1>
 
     <ul>
-        <li>Environmental</li>
-        <li>Educational</li>
-        <li>Community Service</li>
-        <li>Health and Wellness</li>
+        <% categories.forEach(category => { %>
+            <li>
+                <a href="/category/<%= category.category_id %>">
+                    <strong><%= category.name %></strong>
+                </a>
+                <% if (category.description) { %>
+                    - <%= category.description %>
+                <% } %>
+            </li>
+        <% }); %>
     </ul>
 </main>
+
 <%- include('partials/footer') %>
