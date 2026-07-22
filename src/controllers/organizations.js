@@ -1,4 +1,4 @@
-import { getAllOrganizations, getOrganizationDetails } from '../models/organizations.js';
+import { getAllOrganizations, getOrganizationDetails, createOrganization } from '../models/organizations.js';
 import { getProjectsByOrganizationId } from '../models/projects.js';
 
 const showOrganizationsPage = async (req, res, next) => {
@@ -11,6 +11,16 @@ const showOrganizationsPage = async (req, res, next) => {
         next(error);
     }
 };
+const processNewOrganizationForm = async (req, res) => {
+    const { name, description, contactEmail } = req.body;
+    const logoFilename = 'placeholder-logo.png'; 
+
+    const organizationId = await createOrganization(name, description, contactEmail, logoFilename);
+    
+    req.flash('success', 'Organization added successfully!');
+    
+    res.redirect(`/organization/${organizationId}`);
+};
 
 const showOrganizationDetailsPage = async (req, res, next) => {
     try {
@@ -18,7 +28,6 @@ const showOrganizationDetailsPage = async (req, res, next) => {
         const organization = await getOrganizationDetails(organizationId); 
         const projects = await getProjectsByOrganizationId(organizationId);
 
-        // Si la organización no existe en la base de datos
         if (!organization) {
             const err = new Error('Organization not found');
             err.status = 404;
@@ -27,10 +36,20 @@ const showOrganizationDetailsPage = async (req, res, next) => {
 
         const title = 'Organization Details';
 
-        res.render('organization', { title, organization, projects });
+        res.render('organization', { 
+            title, 
+            organization, 
+            projects
+        });
     } catch (error) {
         next(error);
     }
 };
 
-export { showOrganizationsPage, showOrganizationDetailsPage };
+const showNewOrganizationForm = async (req, res) => {
+    const title = 'Add New Organization';
+
+    res.render('new-organization', { title });
+}
+
+export { showOrganizationsPage, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm };

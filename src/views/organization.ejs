@@ -1,26 +1,22 @@
 <%- include('partials/header') %>
 
-<main>
-    <h1><%= title %></h1>
+<main class="container">
+    <div class="organization-card">
+        <h2><%= organization.name %></h2>
+        <p><strong>Description:</strong> <%= organization.description %></p>
+        <p><strong>Contact Email:</strong> <%= organization.contact_email %></p>
 
-    <h2><%= organization.name %></h2>
-    <p><strong>Description:</strong> <%= organization.description %></p>
-    <p><strong>Contact Email:</strong> <%= organization.contact_email %></p>
-
-    <h3>Projects by this Organization</h3>
-    <% if (projects && projects.length > 0) { %>
-        <ul>
-            <% projects.forEach(project => { %>
-                <li>
-                    <%= new Date(project.date).toLocaleDateString() %>: 
-                    <a href="/project/<%= project.project_id %>"><%= project.title %></a> 
-                    (<%= project.location %>)
-                </li>
-            <% }); %>
-        </ul>
-    <% } else { %>
-        <p>No projects currently scheduled for this organization.</p>
-    <% } %>
+        <h3>Projects by this Organization</h3>
+        <% if (projects && projects.length > 0) { %>
+            <ul>
+                <% projects.forEach(project => { %>
+                    <li><%= project.name %></li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p>No projects currently scheduled for this organization.</p>
+        <% } %>
+    </div>
 </main>
 
 <%- include('partials/footer') %>

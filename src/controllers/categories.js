@@ -16,7 +16,6 @@ const showCategoriesPage = async (req, res, next) => {
     }
 }; 
 
-// Controller function for the category details page
 const showCategoryDetailsPage = async (req, res, next) => {
     try {
         const categoryId = req.params.id;
