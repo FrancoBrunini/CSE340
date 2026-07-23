@@ -19,16 +19,14 @@
 
     <h1><%= title %></h1>
 
-    <% 
-        const getFlash = (typeof flash === 'function') ? flash : (typeof locals !== 'undefined' ? locals.flash : null);
-        const messages = getFlash ? getFlash() : {}; 
-    %>
-    <% Object.keys(messages).forEach(type => { %>
-        <% if (messages[type] && messages[type].length > 0) { %>
-            <div class="alert <%= type %>">
-                <% messages[type].forEach(msg => { %>
-                    <p><%= msg %></p>
-                <% }); %>
-            </div>
-        <% } %>
-    <% }); %>
+
+<% const messages = (typeof flash === 'function') ? flash() : {}; %>
+<% Object.keys(messages).forEach(type => { %>
+    <% if (messages[type] && messages[type].length > 0) { %>
+        <div class="alert <%= type %>">
+            <% messages[type].forEach(msg => { %>
+                <p><%= msg %></p>
+            <% }); %>
+        </div>
+    <% } %>
+<% }); %>

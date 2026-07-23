@@ -6,12 +6,12 @@ import { testConnection } from './src/models/db.js';
 import session from 'express-session';
 import flash from './src/middleware/flash.js';
 
-const SESSION_SECRET = process.env.SESSION_SECRET;
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 app.use(express.static(path.join(__dirname, 'public')));
 

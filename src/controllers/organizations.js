@@ -13,7 +13,7 @@ const showOrganizationsPage = async (req, res, next) => {
 };
 const processNewOrganizationForm = async (req, res) => {
     const { name, description, contactEmail } = req.body;
-    const logoFilename = 'placeholder-logo.png'; 
+    const logoFilename = 'placeholder-logo.png'; // Use the placeholder logo for all new organizations    
 
     const organizationId = await createOrganization(name, description, contactEmail, logoFilename);
     
