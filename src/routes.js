@@ -1,16 +1,30 @@
 import express from 'express';
+
 import { showHomePage } from './controllers/index.js';
+
 import {
+
     showOrganizationDetailsPage,
+
     showNewOrganizationForm,
+
     processNewOrganizationForm,
+
     organizationValidation,
+
     showOrganizationsPage
+
 } from './controllers/organizations.js';
-import { showProjectsPage, showProjectDetailsPage, processNewOrganizationForm, showNewProjectForm } from './controllers/projects.js';
+
+import { showProjectsPage, showProjectDetailsPage, processNewProjectForm, showNewProjectForm } from './controllers/projects.js';
+
 import { showEditOrganizationForm, processEditOrganizationForm } from './controllers/organizations.js';
 
+
+
 import { showCategoriesPage, showCategoryDetailsPage } from './controllers/categories.js';
+
+
 
 import { testErrorPage } from './controllers/errors.js';
 

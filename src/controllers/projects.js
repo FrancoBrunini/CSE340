@@ -1,6 +1,6 @@
 import { getAllProjects, getProjectDetails, getUpcomingProjects, createProject} from '../models/projects.js';
 import { getCategoriesByProjectId } from '../models/categories.js';
-import {getallorganizations} from '../models/organizations.js';
+import { getAllOrganizations } from '../models/organizations.js';
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
 const showProjectsPage = async (req, res) => {
@@ -60,4 +60,4 @@ const showProjectDetailsPage = async (req, res, next) => {
     }
 };
 
-export { showProjectsPage, showProjectDetailsPage };
+export { showProjectsPage, showProjectDetailsPage, processNewProjectForm, showNewProjectForm };
