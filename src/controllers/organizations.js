@@ -1,6 +1,8 @@
 import { getAllOrganizations, getOrganizationDetails, createOrganization } from '../models/organizations.js';
 import { getProjectsByOrganizationId } from '../models/projects.js';
 import { body, validationResult } from 'express-validator';
+
+// Define validation rules for organization form
 const organizationValidation = [
     body('name')
         .trim()
@@ -21,25 +23,15 @@ const organizationValidation = [
         .isEmail()
         .withMessage('Please provide a valid email address')
 ];
+
 const showOrganizationsPage = async (req, res, next) => {
     try {
         const organizations = await getAllOrganizations();
         const title = 'Our Partner Organizations';
-
         res.render('organizations', { title, organizations });
     } catch (error) {
         next(error);
     }
-};
-const processNewOrganizationForm = async (req, res) => {
-    const { name, description, contactEmail } = req.body;
-    const logoFilename = 'placeholder-logo.png'; // Use the placeholder logo for all new organizations    
-
-    const organizationId = await createOrganization(name, description, contactEmail, logoFilename);
-    
-    req.flash('success', 'Organization added successfully!');
-    
-    res.redirect(`/organization/${organizationId}`);
 };
 
 const showOrganizationDetailsPage = async (req, res, next) => {
@@ -55,7 +47,6 @@ const showOrganizationDetailsPage = async (req, res, next) => {
         }
 
         const title = 'Organization Details';
-
         res.render('organization', { 
             title, 
             organization, 
@@ -68,9 +59,29 @@ const showOrganizationDetailsPage = async (req, res, next) => {
 
 const showNewOrganizationForm = async (req, res) => {
     const title = 'Add New Organization';
-
     res.render('new-organization', { title });
-}
+};
+
+const processNewOrganizationForm = async (req, res) => {
+    // Check for validation errors
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        // Validation failed - loop through errors
+        results.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        // Redirect back to the new organization form
+        return res.redirect('/new-organization');
+    }
+
+    const { name, description, contactEmail } = req.body;
+    const logoFilename = 'placeholder-logo.png'; // Use the placeholder logo for all new organizations    
+
+    const organizationId = await createOrganization(name, description, contactEmail, logoFilename);
+    req.flash('success', 'Organization added successfully!');
+    res.redirect(`/organization/${organizationId}`);
+};
 
 export {
     showOrganizationsPage,
