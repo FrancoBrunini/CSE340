@@ -1,27 +1,51 @@
-import { getAllProjects, getProjectDetails, getUpcomingProjects} from '../models/projects.js';
+import { getAllProjects, getProjectDetails, getUpcomingProjects, createProject} from '../models/projects.js';
 import { getCategoriesByProjectId } from '../models/categories.js';
+import {getallorganizations} from '../models/organizations.js';
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
 const showProjectsPage = async (req, res) => {
-    // 1. Usa la función con el límite de 5
     const projects = await getUpcomingProjects(NUMBER_OF_UPCOMING_PROJECTS);
     
-    // 2. Título actualizado a 'Upcoming Service Projects'
     const title = 'Upcoming Service Projects';
 
     res.render('projects', { title, projects });
 };
+const showNewProjectForm = async (req, res, next) => {
+    try {
+        const organizations = await getAllOrganizations();
+        const title = 'Add New Project';
+        
+        res.render('new-project', { 
+            title, 
+            organizations 
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+const processNewProjectForm = async (req, res) => {
+    const { title, description, location, date, organizationId } = req.body;
+
+    try {
+        const newProjectId = await createProject(title, description, location, date, organizationId);
+
+        req.flash('success', 'New service project created successfully!');
+        res.redirect(`/project/${newProjectId}`);
+    } catch (error) {
+        console.error('Error creating new project:', error);
+        req.flash('error', 'There was an error creating the service project.');
+        res.redirect('/new-project');
+    }
+}
 const showProjectDetailsPage = async (req, res, next) => {
     try {
         const projectId = req.params.id;
 
-        // Fetch project details and categories concurrently
         const [project, categories] = await Promise.all([
             getProjectDetails(projectId),
             getCategoriesByProjectId(projectId)
         ]);
 
-        // If the project doesn't exist, pass a 404 error to the error handler
         if (!project) {
             const err = new Error('Service project not found');
             err.status = 404;
@@ -30,7 +54,6 @@ const showProjectDetailsPage = async (req, res, next) => {
 
         const title = project.title;
 
-        // Render the view with project data and its categories
         res.render('project', { title, project, categories });
     } catch (error) {
         next(error);

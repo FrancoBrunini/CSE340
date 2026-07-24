@@ -5,7 +5,7 @@
         <h2><%= organization.name %></h2>
         <p><strong>Description:</strong> <%= organization.description %></p>
         <p><strong>Contact Email:</strong> <%= organization.contact_email %></p>
-
+<p><a href="/edit-organization/<%= organization.organization_id %>">Edit Organization</a></p>
         <h3>Projects by this Organization</h3>
         <% if (projects && projects.length > 0) { %>
             <ul>
