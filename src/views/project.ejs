@@ -2,7 +2,9 @@
 
 <main>
     <h1><%= title %></h1>
-
+<p>
+    <a href="/edit-project/<%= project.project_id %>" class="btn btn-edit">Edit Project</a>
+</p>
     <h2><%= project.title %></h2>
     <p><strong>Description:</strong> <%= project.description %></p>
     <p><strong>Date:</strong> <%= new Date(project.date).toLocaleDateString() %></p>

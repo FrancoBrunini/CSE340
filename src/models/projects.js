@@ -20,7 +20,7 @@ const getAllProjects = async () => {
 
 const createProject = async (title, description, location, date, organizationId) => {
     const query = `
-      INSERT INTO projects (title, description, location, date, organization_id)
+      INSERT INTO project (title, description, location, date, organization_id)
       VALUES ($1, $2, $3, $4, $5)
       RETURNING project_id;
     `;
@@ -105,4 +105,26 @@ const getProjectDetails = async (id) => {
     return result.rows.length > 0 ? result.rows[0] : null;
 };
 
-export { createProject, getAllProjects, getProjectsByOrganizationId, getUpcomingProjects, getProjectDetails };
+const updateProject = async (projectId, title, description, location, date, organizationId) => {
+    const sql = `
+        UPDATE projects
+        SET title = $1,
+            description = $2,
+            location = $3,
+            date = $4,
+            organization_id = $5
+        WHERE project_id = $6
+        RETURNING *;
+    `;
+
+    const values = [title, description, location, date, organizationId, projectId];
+    const result = await pool.query(sql, values);
+
+    if (result.rows.length === 0) {
+        throw new Error(`Project with ID ${projectId} not found.`);
+    }
+
+    return result.rows[0];
+};
+
+export { updateProject,createProject, getAllProjects, getProjectsByOrganizationId, getUpcomingProjects, getProjectDetails };
