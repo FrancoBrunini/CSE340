@@ -1,4 +1,5 @@
 import db from './db.js';
+import pool from './db.js';
 
 const getAllProjects = async () => {
     const query = `
@@ -118,7 +119,8 @@ const updateProject = async (projectId, title, description, location, date, orga
     `;
 
     const values = [title, description, location, date, organizationId, projectId];
-    const result = await pool.query(sql, values);
+    
+    const result = await pool.query(sql, values); 
 
     if (result.rows.length === 0) {
         throw new Error(`Project with ID ${projectId} not found.`);
