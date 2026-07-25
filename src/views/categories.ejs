@@ -1,18 +1,18 @@
 <%- include('partials/header') %>
 
-<main>
+<main class="container">
     <h1><%= title %></h1>
-<a href="/new-category" class="btn btn-primary">Add New Category</a>
-<a href="/edit-category/<%= category.category_id %>" class="btn btn-edit">Edit</a>
+    
+    <a href="/new-category" class="btn btn-primary">Add New Category</a>
+
     <ul>
         <% categories.forEach(category => { %>
             <li>
                 <a href="/category/<%= category.category_id %>">
-                    <strong><%= category.name %></strong>
+                    <%= category.name %>
                 </a>
-                <% if (category.description) { %>
-                    - <%= category.description %>
-                <% } %>
+                
+                <a href="/edit-category/<%= category.category_id %>" class="btn btn-edit">Edit</a>
             </li>
         <% }); %>
     </ul>
