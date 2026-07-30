@@ -1,5 +1,3 @@
-import bcrypt from 'bcrypt';
-import createuser from '../models/user.js';
 
 import bcrypt from 'bcrypt';
 import { createUser } from '../models/users.js';
