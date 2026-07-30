@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { showHomePage } from './controllers/index.js';
-
+import { showUserRegistrationForm, processUserRegistrationForm } from './controllers/users.js';
 import {
 
     showOrganizationDetailsPage,
@@ -67,4 +67,6 @@ router.get('/edit-category/:id', showEditCategoryForm);
 router.post('/edit-category/:id', categoryValidation, processEditCategoryForm);
 router.get('/assign-categories/:projectId', showAssignCategoriesForm);
 router.post('/assign-categories/:projectId', processAssignCategoriesForm);
+router.get('/register', showUserRegistrationForm);
+router.post('/register', processUserRegistrationForm);
 export default router;
