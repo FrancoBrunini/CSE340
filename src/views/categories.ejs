@@ -2,8 +2,10 @@
 
 <main class="container">
     <h1><%= title %></h1>
-    
+        <% if (user && user.role_name === 'admin') { %>
+
     <a href="/new-category" class="btn btn-primary">Add New Category</a>
+<% } %>
 
     <ul>
         <% categories.forEach(category => { %>

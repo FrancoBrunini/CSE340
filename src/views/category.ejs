@@ -2,7 +2,11 @@
 
 <main>
     <h1><%= category.name %></h1>
+    <% if (user && user.role_name === 'admin') { %>
+
     <a href="/edit-category/<%= category.category_id %>" class="btn btn-edit">Edit Category</a>
+    <% } %>
+
     <% if (category.description) { %>
         <p><%= category.description %></p>
     <% } %>
