@@ -21,7 +21,7 @@ const getAllProjects = async () => {
 
 const createProject = async (title, description, location, date, organizationId) => {
     const query = `
-      INSERT INTO project (title, description, location, date, organization_id)
+      INSERT INTO projects (title, description, location, date, organization_id)
       VALUES ($1, $2, $3, $4, $5)
       RETURNING project_id;
     `;
