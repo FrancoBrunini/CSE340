@@ -6,6 +6,7 @@
     <% if (user && user.role_name === 'admin') { %>
 
     <a href="/edit-project/<%= project.project_id %>" class="btn btn-edit">Edit Project</a>
+    <a href="/assign-categories/<%= project.project_id %>" class="btn btn-primary">Assign Categories</a>
     <% } %>
 
 </p>

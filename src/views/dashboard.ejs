@@ -1,6 +1,35 @@
 <%- include('partials/header') %>
 
 <main>
+    <section class="admin-users-section mt-4">
+        <h2>Registered Users</h2>
+
+        <% if (locals.users && users.length > 0) { %>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach(u => { %>
+                        <tr>
+                            <td><%= u.user_id %></td>
+                            <td><%= u.first_name %> <%= u.last_name %></td>
+                            <td><%= u.email %></td>
+                            <td><span class="badge"><%= u.role %></span></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>No registered users found.</p>
+        <% } %>
+    </section>
+<% } %>
     <h1><%= title %></h1>
 
     <h2>Dashboard</h2>

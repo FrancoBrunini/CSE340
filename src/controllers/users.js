@@ -92,4 +92,25 @@ const requireRole = (role) => {
         next();
     };
 };
+
+const showDashboard = async (req, res, next) => {
+    try {
+        const user = req.session.user;
+        let usersList = [];
+
+        if (user && user.role === 'admin') {
+            usersList = await getAllUsers();
+        }
+
+        const title = 'User Dashboard';
+
+        res.render('dashboard', {
+            title,
+            user,
+            users: usersList 
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 export { requireRole,showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard };
