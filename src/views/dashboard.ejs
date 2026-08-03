@@ -1,41 +1,40 @@
 <%- include('partials/header') %>
 
-<main>
-    <section class="admin-users-section mt-4">
-        <h2>Registered Users</h2>
+<main class="container my-4">
+    <h2>User Dashboard</h2>
 
-        <% if (locals.users && users.length > 0) { %>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% users.forEach(u => { %>
+    <% if (typeof user !== 'undefined' && user && (user.role === 'admin' || user.role_name === 'admin')) { %>
+        <section class="mt-4">
+            <h3>Registered Users</h3>
+
+            <% if (typeof users !== 'undefined' && users && users.length > 0) { %>
+                <table class="table table-striped mt-3">
+                    <thead>
                         <tr>
-                            <td><%= u.user_id %></td>
-                            <td><%= u.first_name %> <%= u.last_name %></td>
-                            <td><%= u.email %></td>
-                            <td><span class="badge"><%= u.role %></span></td>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
                         </tr>
-                    <% }); %>
-                </tbody>
-            </table>
-        <% } else { %>
-            <p>No registered users found.</p>
-        <% } %>
-    </section>
-<% } %>
-    <h1><%= title %></h1>
-
-    <h2>Dashboard</h2>
-    <p>Name: <%= name %></p>
-    <p>Username: <%= email %></p>
-
+                    </thead>
+                    <tbody>
+                        <% users.forEach(u => { %>
+                            <tr>
+                                <td><%= u.user_id %></td>
+                                <td><%= u.first_name %> <%= u.last_name %></td>
+                                <td><%= u.email %></td>
+                                <td><span class="badge"><%= u.role || u.role_name %></span></td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <p>No registered users found.</p>
+            <% } %>
+        </section>
+    <% } else { %>
+        <p>Welcome to your dashboard, <%= user ? user.first_name : 'User' %>!</p>
+    <% } %>
 </main>
 
 <%- include('partials/footer') %>
