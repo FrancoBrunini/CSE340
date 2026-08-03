@@ -9,9 +9,9 @@
 <body>
     
     
-    <nav>
+ <nav>
     <ul>
-        <% if (typeof user !== 'undefined' && user && user.role === 'admin') { %>
+        <% if (typeof user !== 'undefined' && user && (user.role === 'admin' || user.role_name === 'admin')) { %>
             <li><a href="/dashboard">Dashboard</a></li>
         <% } %>
 
@@ -27,7 +27,7 @@
             <li><a href="/logout">Logout</a></li>
         <% } %>
     </ul>
-</nav>
+</nav>c
 
     <h1><%= title %></h1>
 
