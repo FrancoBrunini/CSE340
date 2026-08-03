@@ -10,7 +10,10 @@
     
     
     <nav>
-        <ul>
+        <ul>    <% if (user && user.role_name === 'admin') { %>
+            <li><a href="/dashboard">Dashboard</a></li>
+                <% } %>
+
             <li><a href="/">Home</a></li>
             <li><a href="/organizations">Organizations</a></li>
             <li><a href="/projects">Projects</a></li>
