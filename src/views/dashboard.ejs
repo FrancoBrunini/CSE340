@@ -1,61 +1,127 @@
 <%- include('partials/header') %>
 
-<main class="container my-4">
-    <h2>User Dashboard</h2>
+<main class="container my-5">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h2 class="dashboard-title h3 mb-1">User Dashboard</h2>
+            <p class="text-muted mb-0">Welcome back, <strong><%= user.name || user.first_name %></strong> </p>
+        </div>
+        <% if (user && (user.role === 'admin' || user.role_name === 'admin')) { %>
+            <span class="badge bg-primary rounded-pill px-3 py-2">Administrator</span>
+        <% } %>
+    </div>
 
-    <% if (typeof user !== 'undefined' && user && (user.role === 'admin' || user.role_name === 'admin')) { %>
-        <section class="mt-4">
-            <h3>Registered Users</h3>
+    <% if (user && (user.role === 'admin' || user.role_name === 'admin')) { %>
+        <section class="dashboard-card admin-panel">
+            <div class="d-flex align-items-center mb-3">
+                <h3 class="h5 text-primary fw-bold mb-0">Admin Panel: Volunteer Management</h3>
+            </div>
 
-            <% if (typeof users !== 'undefined' && users && users.length > 0) { %>
-                <table class="table table-striped mt-3">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% users.forEach(u => { %>
-                            <tr>
-                                <td><%= u.user_id %></td>
-                                <td><%= u.first_name %> <%= u.last_name %></td>
-                                <td><%= u.email %></td>
-                                <td><span class="badge"><%= u.role || u.role_name %></span></td>
-                            </tr>
-                        <% }); %>
-                    </tbody>
-                </table>
-            <% } else { %>
-                <p>No registered users found.</p>
-            <% } %>
-        </section>
-    <% } else { %>
-        <p>Welcome to your dashboard, <%= user ? user.first_name : 'User' %>!</p>
-    <% } %>
-
-    <section class="volunteered-projects my-4">
-    <h3>My Volunteer Projects</h3>
-
-    <% if (typeof volunteeredProjects !== 'undefined' && volunteeredProjects && volunteeredProjects.length > 0) { %>
-        <ul class="list-group">
-            <% volunteeredProjects.forEach(proj => { %>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <a href="/project/<%= proj.project_id %>"><strong><%= proj.project_name %></strong></a>
+            <div class="bg-white border rounded-3 p-4 mb-4">
+                <h6 class="fw-bold text-dark mb-3">Assign User to Project</h6>
+                <form action="/project/volunteers/add" method="POST" class="row g-3">
+                    <div class="col-md-5">
+                        <label for="userId" class="form-label small text-muted font-weight-bold">Select User</label>
+                        <select name="userId" id="userId" class="form-select" required>
+                            <option value="" disabled selected>Choose a user...</option>
+                            <% if (typeof allUsers !== 'undefined' && allUsers) { %>
+                                <% allUsers.forEach(u => { %>
+                                    <option value="<%= u.user_id %>"><%= u.name %> (<%= u.email %>)</option>
+                                <% }); %>
+                            <% } %>
+                        </select>
                     </div>
-                    <form action="/project/<%= proj.project_id %>/unvolunteer" method="POST" style="display:inline;">
-                        <button type="submit" class="btn btn-sm btn-danger">Remove</button>
-                    </form>
-                </li>
-            <% }); %>
-        </ul>
-    <% } else { %>
-        <p>You haven't volunteered for any projects yet.</p>
+
+                    <div class="col-md-5">
+                        <label for="projectId" class="form-label small text-muted font-weight-bold">Select Project</label>
+                        <select name="projectId" id="projectId" class="form-select" required>
+                            <option value="" disabled selected>Choose a project...</option>
+                            <% if (typeof allProjects !== 'undefined' && allProjects) { %>
+                                <% allProjects.forEach(p => { %>
+                                    <option value="<%= p.project_id %>"><%= p.title %></option>
+                                <% }); %>
+                            <% } %>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-success btn-modern w-100">Assign</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="bg-white border rounded-3 p-4">
+                <h6 class="fw-bold text-dark mb-3">All Projects & Assigned Volunteers</h6>
+                <% if (typeof allProjects !== 'undefined' && allProjects && allProjects.length > 0) { %>
+                    <div class="accordion custom-accordion" id="adminProjectsAccordion">
+                        <% allProjects.forEach((project, index) => { %>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading-<%= project.project_id %>">
+                                    <button class="accordion-button <%= index !== 0 ? 'collapsed' : '' %>" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<%= project.project_id %>">
+                                        <div class="d-flex justify-content-between align-items-center w-100 pe-3">
+                                            <span><%= project.title %></span>
+                                            <span class="badge badge-soft">
+                                                <%= project.volunteers ? project.volunteers.length : 0 %> Volunteers
+                                            </span>
+                                        </div>
+                                    </button>
+                                </h2>
+                                <div id="collapse-<%= project.project_id %>" class="accordion-collapse collapse <%= index === 0 ? 'show' : '' %>" data-bs-parent="#adminProjectsAccordion">
+                                    <div class="accordion-body bg-light">
+                                        <% if (project.volunteers && project.volunteers.length > 0) { %>
+                                            <ul class="list-group custom-list-group">
+                                                <% project.volunteers.forEach(v => { %>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <strong class="text-dark"><%= v.name %></strong>
+                                                            <small class="text-muted d-block"><%= v.email %></small>
+                                                        </div>
+                                                        <form action="/project/<%= project.project_id %>/volunteers/remove/<%= v.user_id %>" method="POST" class="m-0">
+                                                            <button type="submit" class="btn btn-outline-danger btn-modern-sm">Remove</button>
+                                                        </form>
+                                                    </li>
+                                                <% }); %>
+                                            </ul>
+                                        <% } else { %>
+                                            <p class="text-muted small mb-0">No volunteers assigned to this project yet.</p>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                <% } else { %>
+                    <p class="text-muted mb-0">No projects available.</p>
+                <% } %>
+            </div>
+        </section>
     <% } %>
-</section>
+
+    <section class="dashboard-card">
+        <h3 class="h5 fw-bold text-dark mb-3">My Volunteer Projects</h3>
+
+        <% if (typeof volunteeredProjects !== 'undefined' && volunteeredProjects && volunteeredProjects.length > 0) { %>
+            <ul class="list-group custom-list-group">
+                <% volunteeredProjects.forEach(project => { %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong class="text-dark fs-6"><%= project.title %></strong>
+                            <% if (project.organization_name) { %>
+                                <span class="text-muted small d-block"><%= project.organization_name %></span>
+                            <% } %>
+                        </div>
+                        <form action="/project/<%= project.project_id %>/unvolunteer" method="POST" class="m-0">
+                            <button type="submit" class="btn btn-outline-danger btn-modern-sm">Remove</button>
+                        </form>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <div class="text-center py-4 text-muted">
+                <p class="mb-0">You haven't volunteered for any projects yet.</p>
+            </div>
+        <% } %>
+    </section>
 </main>
 
 <%- include('partials/footer') %>

@@ -7,11 +7,13 @@ import {
     showLoginForm, 
     processLoginForm, 
     processLogout, 
-    showDashboard, 
+    showDashboardPage, 
     requireLogin, 
     requireRole 
 } from './controllers/users.js';
-
+import {showProjectVolunteersPage,
+    processAdminAddVolunteer,
+    processAdminRemoveVolunteer} from './controllers/volunteerr.js';
 import {
     showOrganizationsPage,
     showOrganizationDetailsPage,
@@ -68,7 +70,7 @@ router.get('/login', showLoginForm);
 router.post('/login', processLoginForm);
 router.get('/logout', processLogout);
 
-router.get('/dashboard', requireLogin, showDashboard);
+router.get('/dashboard', requireLogin, showDashboardPage);
 
 
 router.get('/new-organization', requireRole('admin'), showNewOrganizationForm);
@@ -94,4 +96,11 @@ router.post('/assign-categories/:projectId', requireRole('admin'), processAssign
 
 router.post('/project/:projectId/volunteer', requireLogin, processVolunteer);
 router.post('/project/:projectId/unvolunteer', requireLogin, processUnvolunteer);
+
+
+router.get('/admin/project/:id/volunteers', requireRole('admin'), showProjectVolunteersPage);
+
+router.post('/admin/project/volunteers/add', requireRole('admin'), processAdminAddVolunteer);
+router.post('/project/:projectId/volunteers/remove/:userId', requireRole('admin'), processAdminRemoveVolunteer);
+router.post('/admin/project/:projectId/volunteers/remove/:userId', requireRole('admin'), processAdminRemoveVolunteer);
 export default router;

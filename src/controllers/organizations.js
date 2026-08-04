@@ -1,8 +1,8 @@
 import { getAllOrganizations, getOrganizationDetails, createOrganization, updateOrganization } from '../models/organizations.js';
 import { getProjectsByOrganizationId } from '../models/projects.js';
 import { body, validationResult } from 'express-validator';
+import { isUserVolunteered } from '../models/volunteer.js';
 
-// Define validation rules for organization form
 const organizationValidation = [
     body('name')
         .trim()
@@ -46,12 +46,18 @@ const showOrganizationDetailsPage = async (req, res, next) => {
             return next(err);
         }
 
+        const user = req.session ? req.session.user : null;
+
+       
+        let isVolunteered = false; 
+
         const title = 'Organization Details';
         res.render('organization', { 
             title, 
             organization,
-            isVoluntereed,
-            projects
+            projects,
+            isVolunteered,
+            user           
         });
     } catch (error) {
         next(error);

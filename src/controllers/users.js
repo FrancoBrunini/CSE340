@@ -1,7 +1,14 @@
 
 import bcrypt from 'bcrypt';
-import { createUser, authenticateUser } from '../models/users.js';
+import { createUser, authenticateUser, getAllUser} from '../models/users.js';
 import { getProjectsByVolunteer } from '../models/volunteer.js';
+import { getAllProjects } from '../models/projects.js';
+import { 
+   
+    getVolunteersByProjectId
+  
+} from '../models/volunteer.js';
+
 const showUserRegistrationForm = (req, res) => {
     res.render('register', { title: 'Register' });
 };
@@ -86,28 +93,41 @@ const requireRole = (role) => {
     };
 };
 
-const showDashboard = async (req, res, next) => {
+const showDashboardPage = async (req, res, next) => {
     try {
         const user = req.session.user;
-        let usersList = [];
-        let volunteeredProjects = [];
 
-        if (user && (user.role === 'admin' || user.role_name === 'admin')) {
-            usersList = await getAllUsers();
-        }
+        const volunteeredProjects = await getProjectsByVolunteer(user.user_id);
 
-        if (user) {
-            volunteeredProjects = await getProjectsByVolunteer(user.user_id);
+        let allUsers = [];
+        let allProjects = [];
+
+        if (user.role === 'admin' || user.role_name === 'admin') {
+            allUsers = await getAllUser();
+            
+            const projectsData = await getAllProjects();
+
+            allProjects = await Promise.all(
+                projectsData.map(async (project) => {
+                    const volunteers = await getVolunteersByProjectId(project.project_id); 
+                    return {
+                        ...project,
+                        volunteers: volunteers || []
+                    };
+                })
+            );
         }
 
         res.render('dashboard', {
             title: 'User Dashboard',
             user,
-            users: usersList,
-            volunteeredProjects 
+            volunteeredProjects,
+            allUsers,
+            allProjects
         });
     } catch (error) {
         next(error);
     }
 };
-export { requireRole,showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard };
+
+export { requireRole,showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboardPage };

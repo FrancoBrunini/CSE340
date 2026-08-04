@@ -106,3 +106,77 @@ footer {
     background-color: #d1ecf1;
     border-color: #bee5eb;
 }
+
+.dashboard-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-panel {
+    border-top: 4px solid #0d6efd;
+    background: #f8fafc;
+}
+
+.dashboard-title {
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: -0.5px;
+}
+
+.custom-list-group .list-group-item {
+    border: 1px solid #edf2f7;
+    margin-bottom: 0.5rem;
+    border-radius: 8px !important;
+    padding: 1rem 1.25rem;
+    background-color: #ffffff;
+    transition: background-color 0.15s ease;
+}
+
+.custom-list-group .list-group-item:hover {
+    background-color: #f8fafc;
+}
+
+.custom-accordion .accordion-item {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px !important;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+}
+
+.custom-accordion .accordion-button {
+    font-weight: 600;
+    color: #334155;
+    background-color: #ffffff;
+    box-shadow: none;
+}
+
+.custom-accordion .accordion-button:not(.collapsed) {
+    background-color: #f1f5f9;
+    color: #0f172a;
+}
+
+.btn-modern {
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+}
+
+.btn-modern-sm {
+    border-radius: 6px;
+    font-size: 0.85rem;
+    padding: 0.25rem 0.75rem;
+}
+
+.badge-soft {
+    background-color: #e0f2fe;
+    color: #0369a1;
+    font-weight: 600;
+    padding: 0.35em 0.65em;
+    border-radius: 6px;
+}
