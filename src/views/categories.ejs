@@ -5,6 +5,8 @@
         <% if (user && user.role_name === 'admin') { %>
 
     <a href="/new-category" class="btn btn-primary">Add New Category</a>
+    <a href="/edit-category/<%= category.category_id %>" class="btn btn-edit">Edit</a>
+
 <% } %>
 
     <ul>
@@ -14,7 +16,6 @@
                     <%= category.name %>
                 </a>
                 
-                <a href="/edit-category/<%= category.category_id %>" class="btn btn-edit">Edit</a>
             </li>
         <% }); %>
     </ul>
