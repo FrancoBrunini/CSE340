@@ -1,23 +1,30 @@
 <%- include('partials/header') %>
 
-<main class="container">
+<main class="container my-4">
     <h1><%= title %></h1>
-        <% if (user && user.role_name === 'admin') { %>
 
-    <a href="/new-category" class="btn btn-primary">Add New Category</a>
-    <a href="/edit-category/<%= category.category_id %>" class="btn btn-edit">Edit</a>
+    <% if (user && (user.role_name === 'admin' || user.role === 'admin')) { %>
+        <div class="mb-3">
+            <a href="/new-category" class="btn btn-primary">Add New Category</a>
+        </div>
+    <% } %>
 
-<% } %>
+    <ul class="list-group">
+        <% if (typeof categories !== 'undefined' && categories && categories.length > 0) { %>
+            <% categories.forEach(category => { %>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="/category/<%= category.category_id %>" class="text-decoration-none fw-bold">
+                        <%= category.name %>
+                    </a>
 
-    <ul>
-        <% categories.forEach(category => { %>
-            <li>
-                <a href="/category/<%= category.category_id %>">
-                    <%= category.name %>
-                </a>
-                
-            </li>
-        <% }); %>
+                    <% if (user && (user.role_name === 'admin' || user.role === 'admin')) { %>
+                        <a href="/edit-category/<%= category.category_id %>" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <% } %>
+                </li>
+            <% }); %>
+        <% } else { %>
+            <p class="text-muted">No categories found.</p>
+        <% } %>
     </ul>
 </main>
 
