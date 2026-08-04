@@ -1,5 +1,5 @@
 import express from 'express';
-
+import {processUnvolunteer, processVolunteer} from './controllers/volunteerr.js';
 import { showHomePage } from './controllers/index.js';
 import { 
     showUserRegistrationForm, 
@@ -92,4 +92,6 @@ router.post('/edit-category/:id', requireRole('admin'), categoryValidation, proc
 router.get('/assign-categories/:projectId', requireRole('admin'), showAssignCategoriesForm);
 router.post('/assign-categories/:projectId', requireRole('admin'), processAssignCategoriesForm);
 
+router.post('/project/:projectId/volunteer', requireLogin, processVolunteer);
+router.post('/project/:projectId/unvolunteer', requireLogin, processUnvolunteer);
 export default router;

@@ -1,5 +1,6 @@
 import db from './db.js'
 import bcrypt from 'bcrypt';
+import { getProjectsByVolunteer } from '../models/volunteer.js';
 const createUser = async (name, email, passwordHash) => {
     const default_role = 'user';
     const query = `

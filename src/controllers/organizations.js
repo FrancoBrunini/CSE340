@@ -49,7 +49,8 @@ const showOrganizationDetailsPage = async (req, res, next) => {
         const title = 'Organization Details';
         res.render('organization', { 
             title, 
-            organization, 
+            organization,
+            isVoluntereed,
             projects
         });
     } catch (error) {

@@ -35,6 +35,27 @@
     <% } else { %>
         <p>Welcome to your dashboard, <%= user ? user.first_name : 'User' %>!</p>
     <% } %>
+
+    <section class="volunteered-projects my-4">
+    <h3>My Volunteer Projects</h3>
+
+    <% if (typeof volunteeredProjects !== 'undefined' && volunteeredProjects && volunteeredProjects.length > 0) { %>
+        <ul class="list-group">
+            <% volunteeredProjects.forEach(proj => { %>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <a href="/project/<%= proj.project_id %>"><strong><%= proj.project_name %></strong></a>
+                    </div>
+                    <form action="/project/<%= proj.project_id %>/unvolunteer" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                    </form>
+                </li>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <p>You haven't volunteered for any projects yet.</p>
+    <% } %>
+</section>
 </main>
 
 <%- include('partials/footer') %>
