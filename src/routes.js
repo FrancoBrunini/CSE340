@@ -101,6 +101,7 @@ router.post('/project/:projectId/unvolunteer', requireLogin, processUnvolunteer)
 router.get('/admin/project/:id/volunteers', requireRole('admin'), showProjectVolunteersPage);
 
 router.post('/admin/project/volunteers/add', requireRole('admin'), processAdminAddVolunteer);
+router.post('/project/volunteers/add', requireLogin, requireRole('admin'), processAdminAddVolunteer);
 router.post('/project/:projectId/volunteers/remove/:userId', requireRole('admin'), processAdminRemoveVolunteer);
 router.post('/admin/project/:projectId/volunteers/remove/:userId', requireRole('admin'), processAdminRemoveVolunteer);
 export default router;
